@@ -11,14 +11,13 @@ import tensorflow.keras as keras
 
 from pathlib import Path
 
-# import matplotlib.pyplot as plt
-
-# import matplotlib.pyplot as plt
+from pyspark.sql import SparkSession
+spark = SparkSession.builder.getOrCreate()
 
 root_path = Path(".")
 ratings_file = Path(root_path / "ratings.csv")
 
-df = pd.read_csv(ratings_file)
+df = spark.read.csv(str(ratings_file),header=True)
 
 # PREPOCESS
 # perform some preprocessing to encode users and movies as integer indices

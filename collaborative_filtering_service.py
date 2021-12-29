@@ -13,11 +13,16 @@ from aiohttp import web
 import logging as lg
 import json
 
+from pyspark.sql import SparkSession
+spark = SparkSession.builder.getOrCreate()
+
+
 #Load csv
 root_path = Path(".")
 ratings_file = Path(root_path / "ratings.csv")
-movie_df = pd.read_csv(root_path / "movies2.csv", delimiter="::")
-df = pd.read_csv(ratings_file)
+movie_df = spark.read.csv(str(root_path / "movies2.csv"),header=True,sep="::",encoding="UTF-8")
+df = spark.read.csv(str(ratings_file),header=True)
+
 
 #preprocess
 user_ids = df["userId"].unique().tolist()
